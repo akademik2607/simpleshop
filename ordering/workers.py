@@ -6,6 +6,13 @@ from cart.workers import get_cart
 
 @transaction.atomic
 def save_order_cart(session, order):
+    """
+    saves order information to the database
+
+    :param session:
+    :param order:
+    :return:
+    """
     cart = get_cart(session)
     if cart is None:
         return False

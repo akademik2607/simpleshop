@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
@@ -9,6 +10,11 @@ from ordering.workers import save_order_cart
 
 
 class OrderView(CreateAPIView):
+    """
+    creates a new order
+
+    methods: post
+    """
     models = Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -25,6 +31,7 @@ class OrderView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    @transaction.atomic
     def perform_create(self, session, serializer):
         order = serializer.save()
         save_order_cart(session, order)

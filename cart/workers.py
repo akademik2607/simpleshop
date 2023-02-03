@@ -6,12 +6,24 @@ from django.core.serializers.json import DjangoJSONEncoder
 from cart.models import Product, ProductKit
 
 
-def create_cart(session):
+def create_cart(session) -> dict:
+    """
+    creates a new empty cart
+
+    :param session:
+    :return: cart: dict
+    """
     session['cart'] = {'products': {}, 'total_sum': 0}
     return session['cart']
 
 
-def get_cart(session):
+def get_cart(session) -> dict:
+    """
+    returns the trash from the session
+
+    :param session:
+    :return: cart: dict
+    """
     cart = session.get('cart', None)
     if cart:
         total_sum = 0
@@ -27,7 +39,14 @@ def get_cart(session):
         return create_cart(session)
 
 
-def add_product(title: str, count: int):
+def add_product(title: str, count: int) -> dict:
+    """
+    puts the product into packages and determines the number of packages and the cost of the product
+
+    :param title: str
+    :param count: int
+    :return: product_info: dict
+    """
     if count == 0:
         return None
     product = Product.objects.get(title=title)
@@ -54,6 +73,14 @@ def add_product(title: str, count: int):
 
 
 def add_to_cart_product(session, product: dict, title: str):
+    """
+    adds the product in all packages to the cart
+
+    :param session:
+    :param product:
+    :param title:
+    :return:
+    """
     cart = get_cart(session)
     if not cart:
         cart = create_cart(session)
@@ -61,7 +88,14 @@ def add_to_cart_product(session, product: dict, title: str):
     session['cart'] = cart
 
 
-def remove_product(session, title):
+def remove_product(session, title) -> dict:
+    """
+    removes a product from the shopping cart
+
+    :param session:
+    :param title:
+    :return: cart
+    """
     cart = get_cart(session)
     if cart is None:
         cart = create_cart(session)
@@ -71,6 +105,12 @@ def remove_product(session, title):
     return cart
 
 
-def clear_cart(session):
+def clear_cart(session) -> dict:
+    """
+    clears the trash
+
+    :param session:
+    :return: new_cart
+    """
     create_cart(session)
     return session['cart']

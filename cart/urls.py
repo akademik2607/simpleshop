@@ -1,3 +1,7 @@
+"""
+for information, see settings.urls
+"""
+
 from django.urls import path
 
 from cart.views import ProductListView, CartView

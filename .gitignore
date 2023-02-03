@@ -1,6 +1,5 @@
 .idea
 cart/__pycache__/*
-cart/migrations/*
 cart/management/__pycache__/*
 settings/__pycache__/*
 ordering/__pycache__/*
